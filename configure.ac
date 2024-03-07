@@ -1033,10 +1033,14 @@ AM_CONDITIONAL([NSS_FLAVOUR_GLIBC], [test "x${with_nss_flavour}" = xglibc])
 AM_CONDITIONAL([NSS_FLAVOUR_SOLARIS], [test "x${with_nss_flavour}" = xsolaris])
 AM_CONDITIONAL([NSS_FLAVOUR_FREEBSD], [test "x${with_nss_flavour}" = xfreebsd])
 
+AM_GNU_GETTEXT_VERSION([0.18.3])
+AM_GNU_GETTEXT([external])
+AM_CONDITIONAL([ENABLE_NLS], [test "x${USE_NLS}" = "xyes"])
+
 # generate files
 AC_CONFIG_FILES([Makefile compat/Makefile common/Makefile nss/Makefile
                  pam/Makefile utils/Makefile nslcd/Makefile pynslcd/Makefile
-                 man/Makefile tests/Makefile])
+                 man/Makefile tests/Makefile po/Makefile.in po/Makefile])
 AC_CONFIG_FILES([pynslcd/constants.py], [[
 (
   echo ''
