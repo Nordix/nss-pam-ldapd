@@ -71,7 +71,6 @@ struct pld_ctx {
   struct nslcd_resp saved_authz;
   struct nslcd_resp saved_session;
   int asroot;
-  char *oldpassword;
 };
 
 /* clear the context to all empty values */
@@ -87,12 +86,6 @@ static void ctx_clear(struct pld_ctx *ctx)
   ctx->saved_session.res = PAM_SUCCESS;
   memset(ctx->saved_session.msg, 0, sizeof(ctx->saved_session.msg));
   ctx->asroot = 0;
-  if (ctx->oldpassword)
-  {
-    memset(ctx->oldpassword, 0, strlen(ctx->oldpassword));
-    free(ctx->oldpassword);
-    ctx->oldpassword = NULL;
-  }
 }
 
 /* free the context (this is installed as handler into PAM) */
@@ -509,8 +502,9 @@ int pam_sm_authenticate(pam_handle_t *pamh, int flags,
   if (cfg.debug)
     pam_syslog(pamh, LOG_DEBUG, "authentication succeeded");
   /* if password change is required, save old password in context */
-  if ((ctx->saved_authz.res == PAM_NEW_AUTHTOK_REQD) && (ctx->oldpassword == NULL))
-    ctx->oldpassword = strdup(passwd);
+  if (ctx->saved_authz.res == PAM_NEW_AUTHTOK_REQD) {
+    pam_set_item(pamh, PAM_OLDAUTHTOK, passwd);
+  }
   /* update caller's idea of the user name */
   if ((resp.msg[0] != '\0') && (strcmp(resp.msg, username) != 0))
   {
