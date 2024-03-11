@@ -723,13 +723,6 @@ int pam_sm_chauthtok(pam_handle_t *pamh, int flags,
       ctx->asroot = 1;
       username = "";
     }
-    else if ((ctx->oldpassword != NULL) && (*ctx->oldpassword != '\0'))
-    {
-      /* we already have an old password stored (from a previous
-         authentication phase) so we'll use that and don't re-check */
-      rc = pam_set_item(pamh, PAM_OLDAUTHTOK, ctx->oldpassword);
-      return remap_pam_rc(rc, &cfg);
-    }
     else
     {
       /* prompt the user for a password if needed */
