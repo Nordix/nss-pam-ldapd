@@ -53,7 +53,6 @@
 #endif /* not HAVE_PAM_PAM_MODULES_H */
 
 #include "common/gettext.h"
-#define _(msgid) dgettext(PACKAGE, msgid)
 
 /* the name we store our context under */
 #define PLD_CTX "PAM_LDAPD_CTX"
